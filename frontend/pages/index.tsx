@@ -1,5 +1,5 @@
 import React from 'react'
 
-const Home = () => <h1>Hello world!</h1>
+const Home = () => <a href="/hello-world">Say hello world!</a>
 
 export default Home
