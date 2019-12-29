@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: hello_world
+      MYSQL_DATABASE: hello_world
+      MYSQL_USER: hello_world_user
+      MYSQL_PASSWORD: hello_world
+    volumes:
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
