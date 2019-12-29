@@ -21,12 +21,25 @@ class HelloWorldAPI extends RESTDataSource {
       .then(messages => messages.map(it => it.message))
       .catch(error => console.error(error))
   }
+
+  async saveHelloWorld(message) {
+    console.log(message)
+    return await this.post(
+      `hello-worlds?message=${message}`
+    )
+      .then(isSaved => isSaved)
+      .catch(error => console.error(error))
+  }
 }
 
+// TODO: define hello world
 const typeDefs = gql`
     type Query {
         message(id: Int!): String
         messages: [String!]!
+    }
+    type Mutation {
+        message(message: String!): Boolean
     }
 `
 
@@ -41,6 +54,11 @@ const resolvers = {
       const messages = await dataSources.helloWorldAPI.getHelloWorlds()
       console.log(messages)
       return messages
+    }
+  },
+  Mutation: {
+    message: async (_source, {message}, {dataSources}) => {
+      await dataSources.helloWorldAPI.saveHelloWorld(message)
     }
   }
 }
