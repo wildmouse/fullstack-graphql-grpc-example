@@ -23,7 +23,6 @@ class HelloWorldAPI extends RESTDataSource {
   }
 
   async saveHelloWorld(message) {
-    console.log(message)
     return await this.post(
       `hello-worlds?message=${message}`
     )
