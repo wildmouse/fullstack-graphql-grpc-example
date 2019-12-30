@@ -2,6 +2,12 @@ package com.example.helloworld.controller
 
 import com.example.helloworld.service.HelloWorldService
 import org.springframework.web.bind.annotation.*
+import javax.validation.constraints.NotBlank
+
+data class SaveHelloWorldRequest(
+        @NotBlank
+        val message: String
+)
 
 @RestController
 class HelloWorldController(private val service: HelloWorldService) {
@@ -14,5 +20,5 @@ class HelloWorldController(private val service: HelloWorldService) {
 
     @PostMapping("/hello-worlds")
     fun saveHelloWorld(@RequestParam("message") message: String) =
-            service.insertHelloWorld(message)
+            service.insertHelloWorld(message).id > 0
 }
