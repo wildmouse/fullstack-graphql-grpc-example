@@ -1,7 +1,7 @@
 import React from 'react'
-import {client} from "./hello-world/[id]"
-import gql from "graphql-tag";
-import {ApolloQueryResult} from "apollo-client";
+import client from "../utils/apoloClient"
+import gql from "graphql-tag"
+import {ApolloQueryResult} from "apollo-client"
 
 interface Props {
     messages: string[]
@@ -16,13 +16,13 @@ const Home = ({messages}: Props) => {
 }
 
 Home.getInitialProps = async () => {
-    const messages = await client.query({
-      query: gql`
-          query { messages }
-      `
-    })
-    .then((result: ApolloQueryResult<{ messages: string[] }>) => result.data.messages)
-    .catch(error => console.error(error))
+  const messages = await client.query({
+    query: gql`
+        query { messages }
+    `
+  })
+  .then((result: ApolloQueryResult<{ messages: string[] }>) => result.data.messages)
+  .catch(error => console.error(error))
 
     return {
         messages: messages
