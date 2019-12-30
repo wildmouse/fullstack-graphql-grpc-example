@@ -24,10 +24,10 @@ const HelloWorld = ({message}: Props) => {
     )
 }
 
-HelloWorld.getInitialProps = async (type) => {
+HelloWorld.getInitialProps = async ({ query: {id}}) => {
   const message = await client.query({
     query: gql`
-        query { message(id: ${type.query.id}) }
+        query { message(id: ${id}) }
     `
   })
   .then((result: ApolloQueryResult<{ message: string }>) => result.data.message)
