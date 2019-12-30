@@ -1,5 +1,5 @@
 import React from 'react'
-import ApolloClient, {ApolloQueryResult} from 'apollo-client'
+import {ApolloQueryResult} from 'apollo-client'
 import gql from 'graphql-tag'
 import client from "../../utils/apoloClient"
 

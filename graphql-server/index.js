@@ -47,12 +47,10 @@ const resolvers = {
   Query: {
     message: async (_source, {id}, {dataSources}) => {
       const message = await dataSources.helloWorldAPI.getHelloWorld(id)
-      console.log(message)
       return message
     },
     messages: async (_source, {}, {dataSources}) => {
       const messages = await dataSources.helloWorldAPI.getHelloWorlds()
-      console.log(messages)
       return messages
     }
   },
