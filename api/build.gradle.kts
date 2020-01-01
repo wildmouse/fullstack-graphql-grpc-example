@@ -1,8 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.google.protobuf.gradle.generateProtoTasks
+import com.google.protobuf.gradle.id
+import com.google.protobuf.gradle.ofSourceSet
+import com.google.protobuf.gradle.plugins
+import com.google.protobuf.gradle.protobuf
+import com.google.protobuf.gradle.protoc
+
+buildscript {
+    dependencies {
+        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.8")
+    }
+}
 
 plugins {
+    id( "idea")
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
+    id("com.google.protobuf") version "0.8.8"
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.spring") version "1.3.61"
 }
@@ -22,6 +36,22 @@ dependencyManagement {
     }
 }
 
+protobuf {
+    protoc { artifact = "com.google.protobuf:protoc:3.11.0" }
+    plugins {
+        id("grpc") {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.26.0"
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet("main").forEach {
+            it.plugins {
+                id("grpc")
+            }
+        }
+    }
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -31,10 +61,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     listOf("armeria",
 //            "armeria-brave",
-//            "armeria-grpc",
+            "armeria-grpc",
 //            "armeria-jetty",
 //            "armeria-kafka",
-//            "armeria-logback",
+            "armeria-logback",
 //            "armeria-retrofit2",
 //            "armeria-rxjava",
 //            "armeria-saml",
@@ -46,6 +76,10 @@ dependencies {
     ).forEach {
         implementation("com.linecorp.armeria:$it:0.97.0")
     }
+
+    implementation("io.grpc:grpc-netty-shaded:1.26.0")
+    implementation("io.grpc:grpc-protobuf:1.26.0")
+    implementation("io.grpc:grpc-stub:1.26.0")
 
     runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
     runtimeOnly("org.slf4j:log4j-over-slf4j:1.7.29")
@@ -65,3 +99,4 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "1.8"
     }
 }
+
