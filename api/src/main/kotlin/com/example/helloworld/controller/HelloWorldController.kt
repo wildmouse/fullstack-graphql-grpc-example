@@ -1,9 +1,6 @@
 package com.example.helloworld.controller
 
-import com.example.helloworld.grpc.HelloRequest
-import com.example.helloworld.grpc.HelloServiceGrpc
 import com.example.helloworld.grpc.greeting.GetGreetingsRequest
-import com.example.helloworld.grpc.greeting.GetGreetingsResponse
 import com.example.helloworld.grpc.greeting.GreetingServiceGrpc
 import com.example.helloworld.grpc.greeting.SaveGreetingRequest
 import com.example.helloworld.service.HelloWorldService
@@ -28,11 +25,10 @@ class HelloWorldController(
 
     // TODO: this point is just an example. remove after necessary gRPC services are implemented.
     @PostMapping("/hello-world/grpc")
-    // TODO: use Flux
-    fun getHelloWorldGrpc(): Mono<List<String>> {
+    fun getHelloWorldGrpc(): Flux<String> {
         val request = GetGreetingsRequest.newBuilder().build()
         val response = client.getGreetings(request)
-        return Mono.just(response.messagesList.toMutableList())
+        return Flux.fromIterable(response.messagesList.toMutableList())
     }
 
     @PostMapping("/hello-world/grpc/save")
