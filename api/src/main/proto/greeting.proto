@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package example.grpc.helloworld;
+option java_package = "com.example.helloworld.grpc.greeting";
+option java_multiple_files = true;
+
+service GreetingService {
+    rpc SaveGreeting(SaveGreetingRequest) returns (SaveGreetingResponse) {}
+
+    rpc GetGreetings(GetGreetingsRequest) returns (GetGreetingsResponse) {}
+}
+
+// TODO: replace responses to this nested types
+message Greeting {
+    int64 greeting_id = 1;
+    string message = 2;
+}
+
+message SaveGreetingRequest {
+    string message = 1;
+}
+
+message SaveGreetingResponse {
+    bool is_saved = 1;
+}
+
+message GetGreetingsRequest {}
+
+message GetGreetingsResponse {
+    repeated string messages = 1;
+}
+

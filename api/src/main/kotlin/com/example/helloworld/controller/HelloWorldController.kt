@@ -2,7 +2,12 @@ package com.example.helloworld.controller
 
 import com.example.helloworld.grpc.HelloRequest
 import com.example.helloworld.grpc.HelloServiceGrpc
+import com.example.helloworld.grpc.greeting.GetGreetingsRequest
+import com.example.helloworld.grpc.greeting.GetGreetingsResponse
+import com.example.helloworld.grpc.greeting.GreetingServiceGrpc
+import com.example.helloworld.grpc.greeting.SaveGreetingRequest
 import com.example.helloworld.service.HelloWorldService
+import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -13,17 +18,29 @@ class HelloWorldController(
         private val service: HelloWorldService
 ) {
 
-    // TODO: this point is just an example. remove after necessary gRPC services are implemented.
-    @PostMapping("/hello-world/grpc")
-    fun getHelloWorldGrpc(): Mono<String> {
-        val channel = ManagedChannelBuilder.forAddress("localhost", 8080)
+    companion object {
+        private val channel: ManagedChannel = ManagedChannelBuilder
+                .forAddress("localhost", 8080)
                 .usePlaintext()
                 .build()
-        val client = HelloServiceGrpc.newBlockingStub(channel)
+        val client: GreetingServiceGrpc.GreetingServiceBlockingStub = GreetingServiceGrpc.newBlockingStub(channel)
+    }
 
-        val request = HelloRequest.newBuilder().setName("gRPC").build()
-        val reply = client.hello(request)
-        return Mono.just(reply.message)
+    // TODO: this point is just an example. remove after necessary gRPC services are implemented.
+    @PostMapping("/hello-world/grpc")
+    // TODO: use Flux
+    fun getHelloWorldGrpc(): Mono<List<String>> {
+        val request = GetGreetingsRequest.newBuilder().build()
+        val response = client.getGreetings(request)
+        return Mono.just(response.messagesList.toMutableList())
+    }
+
+    @PostMapping("/hello-world/grpc/save")
+    fun saveHelloWorldGrpc(): Mono<Boolean> {
+        val request = SaveGreetingRequest.newBuilder().setMessage("Hello, World!").build()
+        val response = client.saveGreeting(request)
+
+        return Mono.just(response.isSaved)
     }
 
     @GetMapping("/hello-worlds/{id}")
