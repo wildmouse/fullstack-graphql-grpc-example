@@ -15,9 +15,8 @@ service GreetingService {
     }
 }
 
-// TODO: replace responses to this nested types
 message Greeting {
-    int64 greeting_id = 1;
+    int32 id = 1;
     string message = 2;
 }
 
@@ -26,21 +25,21 @@ message SaveGreetingRequest {
 }
 
 message SaveGreetingResponse {
-    bool is_saved = 1;
+    Greeting greeting = 1;
 }
 
 message GetGreetingRequest {
-    int64 id = 1;
+    int32 id = 1;
 }
 
 message GetGreetingResponse {
-    string message = 1;
+    Greeting greeting = 1;
 }
 
 message GetGreetingsRequest {
 }
 
 message GetGreetingsResponse {
-    repeated string messages = 1;
+    repeated Greeting greetings = 1;
 }
 

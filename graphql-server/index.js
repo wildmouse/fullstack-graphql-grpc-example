@@ -38,79 +38,77 @@ const SaveGreeting = ({message}, context) => {
 }
 
 // Leave as a sample
-class HelloWorldAPI extends RESTDataSource {
+class GreetingAPI extends RESTDataSource {
   constructor() {
     super()
     this.baseURL = 'http://localhost:8080/'
   }
 
-  async getHelloWorld(id) {
-    return this.get(`hello-worlds/${id}`)
-      .then(response => {
-        return response.message
-      })
+  async getGreeting(id) {
+    return this.get(`greetings/${id}`)
+      .then(greeting => greeting)
       .catch(error => console.error(error))
   }
 
   async getHelloWorlds() {
-    return await this.get('hello-worlds')
-      .then(messages => messages.map(it => it.message))
+    return await this.get('greetings')
+      .then(greetings => greetings)
       .catch(error => console.error(error))
   }
 
   async saveHelloWorld(message) {
-    return await this.post(
-      `hello-worlds?message=${message}`
-    )
-      .then(isSaved => isSaved)
+    return await this.post(`greetings?message=${message}`)
+      .then(greeting => greeting)
       .catch(error => console.error(error))
   }
 }
 
 // TODO: define greeting type
 const typeDefs = gql`
-    type Query {
-        message(id: Int!): String
-        messages: [String!]!
+    type Greeting {
+        id: Int!
+        message: String!
     }
+
+    type Query {
+        greeting(id: Int!): Greeting
+        greetings: [Greeting!]!
+    }
+
     type Mutation {
-        message(message: String!): Boolean
+        greeting(message: String!): Greeting!
     }
 `
 
 const resolvers = {
   Query: {
-    message: async (_source, {id}) => {
-      const {message} = await GetGreeting({id}, (err, result) => {
+    greeting: async (_source, {id}) => {
+      const {greeting} = await GetGreeting({id}, (err, result) => {
         return result
       })
-      return message
+      return greeting
     },
-    messages: async (_source, {}) => {
-      const {messages} = await GetGreetings({}, (err, result) => {
+    greetings: async (_source, {}) => {
+      const { greetings} = await GetGreetings({}, (err, result) => {
         return result
       })
-      return messages
+      return greetings
     }
   },
   Mutation: {
-    message: async (_source, {message}) => {
-      const { isSaved } = await SaveGreeting({message}, (err, result) => {
+    greeting: async (_source, {message}) => {
+      const {greeting} = await SaveGreeting({message}, (err, result) => {
+        console.log('result: ', result)
         return result
       })
-      return isSaved
+      return greeting
     }
   }
 }
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
-  dataSources: () => {
-    return {
-      helloWorldAPI: new HelloWorldAPI()
-    }
-  }
+  resolvers
 })
 
 server.listen().then(({url}) => {

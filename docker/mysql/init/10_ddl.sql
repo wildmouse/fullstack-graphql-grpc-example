@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS hello_world;
+CREATE DATABASE IF NOT EXISTS greeting;
 
-CREATE TABLE hello_world.hello_worlds
+CREATE TABLE greetings
 (
     `id`      int(11)      NOT NULL AUTO_INCREMENT,
     `message` varchar(100) NOT NULL DEFAULT 'Hello, World!',
