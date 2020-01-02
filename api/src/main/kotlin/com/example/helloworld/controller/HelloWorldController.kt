@@ -24,38 +24,27 @@ class HelloWorldController(
         val client: GreetingServiceGrpc.GreetingServiceBlockingStub = GreetingServiceGrpc.newBlockingStub(channel)
     }
 
-    // TODO: this point is just an example. remove after necessary gRPC services are implemented.
-    @PostMapping("/hello-world/grpc/{id}")
-    fun getHelloWorldGrpc(
-            @PathVariable("id") id: Long
-    ): Mono<String> {
+    @GetMapping("/hello-worlds/{id}")
+    fun getHelloWorld(@PathVariable("id") id: Long): Mono<String> {
         val request = GetGreetingRequest.newBuilder().setId(id).build()
         val response = client.getGreeting(request)
         return Mono.just(response.message)
     }
 
-    @PostMapping("/hello-world/grpc")
-    fun getHelloWorldGrpc(): Flux<String> {
+    @GetMapping("/hello-worlds")
+    fun getHelloWorldList(): Flux<String> {
         val request = GetGreetingsRequest.newBuilder().build()
         val response = client.getGreetings(request)
         return Flux.fromIterable(response.messagesList.toMutableList())
     }
 
-    @PostMapping("/hello-world/grpc/save")
-    fun saveHelloWorldGrpc(): Mono<Boolean> {
-        val request = SaveGreetingRequest.newBuilder().setMessage("Hello, World!").build()
+    @PostMapping("/hello-worlds")
+    fun saveHelloWorld(@RequestParam("message") message: String): Mono<Boolean> {
+        val request = SaveGreetingRequest.newBuilder()
+                .setMessage(message)
+                .build()
         val response = client.saveGreeting(request)
 
         return Mono.just(response.isSaved)
     }
-
-    @GetMapping("/hello-worlds/{id}")
-    fun getHelloWorld(@PathVariable("id") id: Long) = Mono.just(service.getHelloWorld(id))
-
-    @GetMapping("/hello-worlds")
-    fun getHelloWorldList() = Flux.just(service.getHelloWorldList())
-
-    @PostMapping("/hello-worlds")
-    fun saveHelloWorld(@RequestParam("message") message: String) =
-            Mono.just(service.insertHelloWorld(message).id > 0)
 }
