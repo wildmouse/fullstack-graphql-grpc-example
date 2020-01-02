@@ -1,19 +1,25 @@
 package com.example.helloworld.service
 
-import com.example.helloworld.entity.HelloWorld
 import com.example.helloworld.grpc.greeting.*
-import com.example.helloworld.repository.HelloWorldRepository
+import com.example.helloworld.entity.Greeting
+import com.example.helloworld.repository.GreetingRepository
 import io.grpc.stub.StreamObserver
 
-class GreetingService(
-        private val repository: HelloWorldRepository
+class GreetingGrpcService(
+        private val repository: GreetingRepository
 ) : GreetingServiceGrpc.GreetingServiceImplBase() {
     override fun getGreeting(request: GetGreetingRequest?, responseObserver: StreamObserver<GetGreetingResponse>?) {
         val id = request?.id ?: -1
-        val message = repository.findById(id).get().message
+        val greeting = repository.findById(id).get().let {
+            com.example.helloworld.grpc.greeting.Greeting
+                    .newBuilder()
+                    .setMessage(it.message)
+                    .setId(it.id)
+                    .build()
+        }
         val response = GetGreetingResponse
                 .newBuilder()
-                .setMessage(message)
+                .setGreeting(greeting)
                 .build()
 
         responseObserver?.onNext(response)
@@ -21,10 +27,17 @@ class GreetingService(
     }
 
     override fun getGreetings(request: GetGreetingsRequest?, responseObserver: StreamObserver<GetGreetingsResponse>?) {
-        val messages = repository.findAll().map { it.message }
+        val greetings = repository.findAll().map {
+            com.example.helloworld.grpc.greeting.Greeting
+                    .newBuilder()
+                    .setMessage(it.message)
+                    .setId(it.id)
+                    .build()
+        }
+
         val response = GetGreetingsResponse
                 .newBuilder()
-                .addAllMessages(messages)
+                .addAllGreetings(greetings)
                 .build()
 
         responseObserver?.onNext(response)
@@ -33,10 +46,17 @@ class GreetingService(
 
     override fun saveGreeting(request: SaveGreetingRequest?, responseObserver: StreamObserver<SaveGreetingResponse>?) {
         val message = request?.message ?: "Hello, World!"
-        val greeting = repository.save(HelloWorld(message))
+        val greeting = repository.save(Greeting(message)).let {
+            com.example.helloworld.grpc.greeting.Greeting
+                    .newBuilder()
+                    .setMessage(it.message)
+                    .setId(it.id)
+                    .build()
+        }
+
         val response = SaveGreetingResponse
                 .newBuilder()
-                .setIsSaved(greeting.id > 0)
+                .setGreeting(greeting)
                 .build()
 
         responseObserver?.onNext(response)

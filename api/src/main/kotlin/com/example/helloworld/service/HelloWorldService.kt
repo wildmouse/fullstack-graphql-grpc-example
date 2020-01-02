@@ -1,17 +1,17 @@
 package com.example.helloworld.service
 
-import com.example.helloworld.entity.HelloWorld
-import com.example.helloworld.repository.HelloWorldRepository
+import com.example.helloworld.entity.Greeting
+import com.example.helloworld.repository.GreetingRepository
 import org.springframework.stereotype.Service
 
 @Service
-class HelloWorldService(
-        private val repository: HelloWorldRepository
+class GreetingService(
+        private val repository: GreetingRepository
 ) {
 
-    fun getHelloWorld(id: Long) = repository.findById(id)
+    fun getGreeting(id: Int) = repository.findById(id)
 
-    fun getHelloWorldList() = repository.findAll()
+    fun getGreetingList() = repository.findAll()
 
-    fun insertHelloWorld(message: String) = HelloWorld(message).let { repository.save(it) }
+    fun saveGreeting(message: String) = Greeting(message).let { repository.save(it) }
 }

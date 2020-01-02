@@ -2,28 +2,34 @@ import React from 'react'
 import {ApolloQueryResult} from 'apollo-client'
 import gql from 'graphql-tag'
 import client from "../../utils/apoloClient"
+import {Greeting} from "../index";
 
 interface Props {
-    message: string
+    greeting: Greeting
 }
 
-const HelloWorld = ({message}: Props) => {
+const HelloWorld = ({greeting}: Props) => {
     return (
-        <p>{message}</p>
+        <p>{greeting.message}</p>
     )
 }
 
 HelloWorld.getInitialProps = async ({query: {id}}) => {
-  const message = await client.query({
+  const greeting = await client.query({
     query: gql`
-        query { message(id: ${id}) }
+        query {
+            greeting(id: ${id})  {
+                id
+                message
+            }
+        }
     `
   })
-  .then((result: ApolloQueryResult<{ message: string }>) => result.data.message)
+  .then((result: ApolloQueryResult<{ greeting: Greeting }>) => result.data.greeting)
   .catch(error => console.error(error))
 
     return {
-        message: message
+        greeting: greeting
     }
 }
 

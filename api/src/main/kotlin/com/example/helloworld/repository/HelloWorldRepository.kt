@@ -1,6 +1,6 @@
 package com.example.helloworld.repository
 
-import com.example.helloworld.entity.HelloWorld
+import com.example.helloworld.entity.Greeting
 import org.springframework.data.repository.CrudRepository
 
-interface HelloWorldRepository : CrudRepository<HelloWorld, Long>
+interface GreetingRepository : CrudRepository<Greeting, Int>
