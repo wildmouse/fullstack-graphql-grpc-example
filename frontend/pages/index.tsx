@@ -4,11 +4,16 @@ import gql from "graphql-tag"
 import {ApolloQueryResult} from "apollo-client"
 import {useRouter} from "next/router"
 
-interface Props {
-    messages: string[]
+export type Greeting = {
+    id?: number
+    message: string
 }
 
-const Home = ({messages}: Props) => {
+interface Props {
+    greetings: Greeting[]
+}
+
+const Home = ({greetings}: Props) => {
     const router = useRouter()
 
     const [message, setMessage] = useState('')
@@ -19,7 +24,12 @@ const Home = ({messages}: Props) => {
       }
     const isSaved = await client.mutate({
       mutation: gql`
-          mutation { message(message: "${message}")}
+          mutation {
+              greeting(message: "${message}") {
+                  id
+                  message
+              }
+          }
       `
     })
     .then(result => {
@@ -41,9 +51,9 @@ const Home = ({messages}: Props) => {
             <input value={message} onChange={(e) => setMessage(e.target.value)}/>
             <button onClick={onClickGreet}>Greet</button>
             {
-                messages.map((message, index) =>
-                    <p key={index}>
-                        <a href={`/hello-world/${index + 1}`}>See greeting of {index + 1}</a>
+                greetings.map((greeting) =>
+                    <p key={greeting.id}>
+                        <a href={`/hello-world/${greeting.id}`}>See greeting of {greeting.id}</a>
                     </p>
                 )
             }
@@ -52,16 +62,21 @@ const Home = ({messages}: Props) => {
 }
 
 Home.getInitialProps = async () => {
-  const messages = await client.query({
+  const greetings = await client.query({
     query: gql`
-        query { messages }
+        query {
+            greetings {
+                id
+                message
+            }
+        }
     `
   })
-  .then((result: ApolloQueryResult<{ messages: string[] }>) => result.data.messages)
+  .then((result: ApolloQueryResult<{ greetings: Greeting[] }>) => result.data.greetings)
   .catch(error => console.error(error))
 
     return {
-        messages: messages
+        greetings: greetings
     }
 }
 
