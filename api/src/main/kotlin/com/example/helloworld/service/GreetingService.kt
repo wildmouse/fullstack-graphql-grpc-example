@@ -8,6 +8,18 @@ import io.grpc.stub.StreamObserver
 class GreetingService(
         private val repository: HelloWorldRepository
 ) : GreetingServiceGrpc.GreetingServiceImplBase() {
+    override fun getGreeting(request: GetGreetingRequest?, responseObserver: StreamObserver<GetGreetingResponse>?) {
+        val id = request?.id ?: -1
+        val message = repository.findById(id).get().message
+        val response = GetGreetingResponse
+                .newBuilder()
+                .setMessage(message)
+                .build()
+
+        responseObserver?.onNext(response)
+        responseObserver?.onCompleted()
+    }
+
     override fun getGreetings(request: GetGreetingsRequest?, responseObserver: StreamObserver<GetGreetingsResponse>?) {
         val messages = repository.findAll().map { it.message }
         val response = GetGreetingsResponse

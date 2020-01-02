@@ -5,9 +5,14 @@ option java_package = "com.example.helloworld.grpc.greeting";
 option java_multiple_files = true;
 
 service GreetingService {
-    rpc SaveGreeting(SaveGreetingRequest) returns (SaveGreetingResponse) {}
+    rpc SaveGreeting (SaveGreetingRequest) returns (SaveGreetingResponse) {
+    }
 
-    rpc GetGreetings(GetGreetingsRequest) returns (GetGreetingsResponse) {}
+    rpc GetGreeting (GetGreetingRequest) returns (GetGreetingResponse) {
+    }
+
+    rpc GetGreetings (GetGreetingsRequest) returns (GetGreetingsResponse) {
+    }
 }
 
 // TODO: replace responses to this nested types
@@ -24,7 +29,16 @@ message SaveGreetingResponse {
     bool is_saved = 1;
 }
 
-message GetGreetingsRequest {}
+message GetGreetingRequest {
+    int64 id = 1;
+}
+
+message GetGreetingResponse {
+    string message = 1;
+}
+
+message GetGreetingsRequest {
+}
 
 message GetGreetingsResponse {
     repeated string messages = 1;

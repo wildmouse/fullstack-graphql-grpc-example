@@ -1,5 +1,6 @@
 package com.example.helloworld.controller
 
+import com.example.helloworld.grpc.greeting.GetGreetingRequest
 import com.example.helloworld.grpc.greeting.GetGreetingsRequest
 import com.example.helloworld.grpc.greeting.GreetingServiceGrpc
 import com.example.helloworld.grpc.greeting.SaveGreetingRequest
@@ -24,6 +25,15 @@ class HelloWorldController(
     }
 
     // TODO: this point is just an example. remove after necessary gRPC services are implemented.
+    @PostMapping("/hello-world/grpc/{id}")
+    fun getHelloWorldGrpc(
+            @PathVariable("id") id: Long
+    ): Mono<String> {
+        val request = GetGreetingRequest.newBuilder().setId(id).build()
+        val response = client.getGreeting(request)
+        return Mono.just(response.message)
+    }
+
     @PostMapping("/hello-world/grpc")
     fun getHelloWorldGrpc(): Flux<String> {
         val request = GetGreetingsRequest.newBuilder().build()
@@ -40,7 +50,7 @@ class HelloWorldController(
     }
 
     @GetMapping("/hello-worlds/{id}")
-    fun getHelloWorld(@PathVariable("id") id: Int) = Mono.just(service.getHelloWorld(id))
+    fun getHelloWorld(@PathVariable("id") id: Long) = Mono.just(service.getHelloWorld(id))
 
     @GetMapping("/hello-worlds")
     fun getHelloWorldList() = Flux.just(service.getHelloWorldList())
