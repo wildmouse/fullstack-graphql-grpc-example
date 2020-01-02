@@ -9,7 +9,7 @@ class HelloWorldService(
         private val repository: HelloWorldRepository
 ) {
 
-    fun getHelloWorld(id: Int) = repository.findById(id)
+    fun getHelloWorld(id: Long) = repository.findById(id)
 
     fun getHelloWorldList() = repository.findAll()
 

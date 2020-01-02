@@ -10,5 +10,5 @@ data class HelloWorld(
         var message: String = "Hello, World!",
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        var id: Int = 0
+        var id: Long = 0
 )

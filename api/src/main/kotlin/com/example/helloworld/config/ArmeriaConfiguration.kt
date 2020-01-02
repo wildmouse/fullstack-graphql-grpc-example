@@ -1,6 +1,7 @@
 package com.example.helloworld.config
 
-import com.example.helloworld.service.HelloServiceImpl
+import com.example.helloworld.repository.HelloWorldRepository
+import com.example.helloworld.service.GreetingService
 import com.linecorp.armeria.server.docs.DocService
 import com.linecorp.armeria.server.grpc.GrpcService
 import com.linecorp.armeria.server.logging.AccessLogWriter
@@ -10,7 +11,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ArmeriaConfiguration {
+class ArmeriaConfiguration(
+        private val repository: HelloWorldRepository
+) {
 
     @Bean
     fun armeriaServerConfigurator(): ArmeriaServerConfigurator {
@@ -19,7 +22,7 @@ class ArmeriaConfiguration {
             it.decorator(LoggingService.newDecorator())
             it.accessLogWriter(AccessLogWriter.combined(), false)
             it.service(GrpcService.builder()
-                    .addService(HelloServiceImpl())
+                    .addService(GreetingService(repository))
                     .build())
         }
     }
