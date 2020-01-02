@@ -2,7 +2,6 @@ package com.example.helloworld.config
 
 import com.example.helloworld.repository.HelloWorldRepository
 import com.example.helloworld.service.GreetingService
-import com.example.helloworld.service.HelloServiceImpl
 import com.linecorp.armeria.server.docs.DocService
 import com.linecorp.armeria.server.grpc.GrpcService
 import com.linecorp.armeria.server.logging.AccessLogWriter
@@ -23,7 +22,6 @@ class ArmeriaConfiguration(
             it.decorator(LoggingService.newDecorator())
             it.accessLogWriter(AccessLogWriter.combined(), false)
             it.service(GrpcService.builder()
-                    .addService(HelloServiceImpl())
                     .addService(GreetingService(repository))
                     .build())
         }
