@@ -10,17 +10,23 @@ class GreetingGrpcService(
 ) : GreetingServiceGrpc.GreetingServiceImplBase() {
     override fun getGreeting(request: GetGreetingRequest?, responseObserver: StreamObserver<GetGreetingResponse>?) {
         val id = request?.id ?: -1
-        val greeting = repository.findById(id).get().let {
-            com.example.helloworld.grpc.greeting.Greeting
-                    .newBuilder()
-                    .setMessage(it.message)
-                    .setId(it.id)
+
+        val greeting = repository
+                .findById(id)
+
+        val response = if (greeting.isPresent) {
+            GetGreetingResponse.newBuilder()
+                    .setGreeting(greeting.let {
+                        com.example.helloworld.grpc.greeting.Greeting
+                                .newBuilder()
+                                .setMessage(it.get().message)
+                                .setId(it.get().id)
+                                .build()
+                    })
                     .build()
+        } else {
+            GetGreetingResponse.getDefaultInstance()
         }
-        val response = GetGreetingResponse
-                .newBuilder()
-                .setGreeting(greeting)
-                .build()
 
         responseObserver?.onNext(response)
         responseObserver?.onCompleted()
