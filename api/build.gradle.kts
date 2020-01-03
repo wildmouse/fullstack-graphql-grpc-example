@@ -13,10 +13,11 @@ buildscript {
 }
 
 plugins {
-    id( "idea")
+    id("idea")
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
     id("com.google.protobuf") version "0.8.8"
+    id("com.google.cloud.tools.jib") version "1.8.0"
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.spring") version "1.3.61"
 }
@@ -97,6 +98,16 @@ tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
+    }
+}
+
+jib {
+    to {
+        image = "wildmouse/greeting_api"
+    }
+    container {
+        // TODO: make active profile variable
+        args = listOf("--spring.profiles.active=local")
     }
 }
 

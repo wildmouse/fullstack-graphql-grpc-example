@@ -7,18 +7,19 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
+@RequestMapping("/greetings")
 class HelloWorldController(
         private val service: GreetingService
 ) {
 
-    @GetMapping("/grpc/greetings/{id}")
+    @GetMapping("/{id}")
     fun getGreeting(@PathVariable("id") id: Int): Mono<Greeting> =
             Mono.just(service.getGreeting(id).get())
 
-    @GetMapping("/grpc/hello-worlds")
+    @GetMapping
     fun getHelloWorldList(): Flux<Greeting> = Flux.fromIterable(service.getGreetingList())
 
-    @PostMapping("/grpc/hello-worlds")
+    @PostMapping
     fun saveHelloWorld(@RequestParam("message") message: String): Mono<Greeting> =
             Mono.just(service.saveGreeting(message))
 }

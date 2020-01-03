@@ -1,13 +1,18 @@
-version: '3'
+version: '2.4'
 services:
   mysql:
     image: mysql:5.7
+    container_name: greeting_mysql
     environment:
-      MYSQL_ROOT_PASSWORD: hello_world
-      MYSQL_DATABASE: hello_world
-      MYSQL_USER: hello_world_user
-      MYSQL_PASSWORD: hello_world
+      MYSQL_ROOT_PASSWORD: greeting
+      MYSQL_DATABASE: greeting
+      MYSQL_USER: greeting_user
+      MYSQL_PASSWORD: greeting
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-pgreeting"]
+      timeout: 20s
+      retries: 10

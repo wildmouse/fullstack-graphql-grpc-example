@@ -9,8 +9,9 @@ const greetingProtoPath = '../api/src/main/proto/greeting.proto'
 const greetingProtoDefinition = protoLoader.loadSync(greetingProtoPath)
 const greetingPackageDefinition = grpc.loadPackageDefinition(greetingProtoDefinition).example.grpc.helloworld
 
+const clientUri = process.env.CLIENT_URI || "localhost:8080"
 const client = new greetingPackageDefinition.GreetingService(
-  "localhost:8080", grpc.credentials.createInsecure()
+  clientUri, grpc.credentials.createInsecure()
 )
 
 const GetGreeting = (params, context) => {
