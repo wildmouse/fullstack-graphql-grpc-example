@@ -1,13 +1,13 @@
 version: '2.4'
 services:
   frontend:
-    image: wildmouse/frontend:latest
+    image: wildmouse/greeting_frontend:latest
     container_name: greeting_frontend
     ports:
       - 3000:3000
 
   bff:
-    image: wildmouse/bff:latest
+    image: wildmouse/greeting_bff:latest
     container_name: greeting_bff
     ports:
       - 4000:4000
