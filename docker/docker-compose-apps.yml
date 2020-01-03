@@ -13,7 +13,7 @@ services:
       - 4000:4000
 
   api:
-    image: api:0.0.1-SNAPSHOT
+    image: wildmouse/greeting_api:latest
     container_name: greeting_api
     # TODO: remove depends on for more resiliency
     depends_on:
@@ -21,7 +21,7 @@ services:
         condition: service_healthy
     ports:
       - 8080:8080
-      -
+
   mysql:
     image: mysql:5.7
     container_name: greeting_mysql
@@ -35,6 +35,6 @@ services:
     ports:
       - 3306:3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-greeting"]
+      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-pgreeting"]
       timeout: 20s
       retries: 10

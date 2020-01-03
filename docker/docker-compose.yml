@@ -13,6 +13,6 @@ services:
     ports:
       - 3306:3306
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-greeting"]
+      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-pgreeting"]
       timeout: 20s
       retries: 10

@@ -101,3 +101,12 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+jib {
+    to {
+        image = "wildmouse/greeting_api"
+    }
+    container {
+        args = listOf("--spring.profiles.active=local")
+    }
+}
+
