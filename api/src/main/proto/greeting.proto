@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package example.grpc.helloworld;
+option java_package = "com.example.helloworld.grpc.greeting";
+option java_multiple_files = true;
+
+service GreetingService {
+    rpc SaveGreeting (SaveGreetingRequest) returns (SaveGreetingResponse) {
+    }
+
+    rpc GetGreeting (GetGreetingRequest) returns (GetGreetingResponse) {
+    }
+
+    rpc GetGreetings (GetGreetingsRequest) returns (GetGreetingsResponse) {
+    }
+}
+
+message Greeting {
+    int32 id = 1;
+    string message = 2;
+}
+
+message SaveGreetingRequest {
+    string message = 1;
+}
+
+message SaveGreetingResponse {
+    Greeting greeting = 1;
+}
+
+message GetGreetingRequest {
+    int32 id = 1;
+}
+
+message GetGreetingResponse {
+    Greeting greeting = 1;
+}
+
+message GetGreetingsRequest {
+}
+
+message GetGreetingsResponse {
+    repeated Greeting greetings = 1;
+}
+
