@@ -46,19 +46,31 @@ const Home = ({greetings}: Props) => {
       }
   }, [message])
 
+    if (greetings.length == 0) {
+        return (
+            <>
+                <input value={message} onChange={(e) => setMessage(e.target.value)}/>
+                <button onClick={onClickGreet}>Greet</button>
+                <p>There is no greeting. Please say hi!</p>
+            </>
+        )
+    }
     return (
         <>
             <input value={message} onChange={(e) => setMessage(e.target.value)}/>
             <button onClick={onClickGreet}>Greet</button>
-            {
-                greetings.map((greeting) =>
-                    <p key={greeting.id}>
-                        <a href={`/hello-world/${greeting.id}`}>See greeting of {greeting.id}</a>
-                    </p>
-                )
-            }
+            <ul>
+                {
+                    greetings.map((greeting) =>
+                        <li key={greeting.id}>
+                            <a href={`/hello-world/${greeting.id}`}>See greeting {greeting.id}</a>
+                        </li>
+                    )
+                }
+            </ul>
         </>
     )
+
 }
 
 Home.getInitialProps = async () => {
