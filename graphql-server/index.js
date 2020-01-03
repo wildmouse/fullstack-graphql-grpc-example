@@ -84,16 +84,22 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     greeting: async (_source, {id}) => {
-      const {greeting} = await GetGreeting({id}, (err, result) => {
+      const result = await GetGreeting({id}, (err, result) => {
         return result
       })
-      return greeting
+      if (!result.hasOwnProperty("greeting")) {
+        return undefined
+      }
+      return result.greeting
     },
     greetings: async (_source, {}) => {
-      const { greetings} = await GetGreetings({}, (err, result) => {
+      const result = await GetGreetings({}, (err, result) => {
         return result
       })
-      return greetings
+      if (!result.hasOwnProperty("greetings")) {
+        return []
+      }
+      return result.greetings
     }
   },
   Mutation: {
