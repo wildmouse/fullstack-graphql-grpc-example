@@ -13,13 +13,23 @@ A below languages, frameworks, libraries and other technologies are used(or will
 - Next.js
 - GraphQL(Apollo Client)
 
+### BFF
+
+- Apollo Server
+- gRPC(as a Client)
+
 ### Backend
 
 - Kotlin
 - Spring Boot
-- REST(this will be replaces with gRPC)
+- gRPC(as a Server)
+- REST(as a comparison to gRPC)
+- Armeria
+- Jib
+- MySQL
 
 ### Infrastructure 
 
+- Docker
 To be determined.
 

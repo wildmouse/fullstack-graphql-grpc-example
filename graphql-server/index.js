@@ -105,7 +105,6 @@ const resolvers = {
   Mutation: {
     greeting: async (_source, {message}) => {
       const {greeting} = await SaveGreeting({message}, (err, result) => {
-        console.log('result: ', result)
         return result
       })
       return greeting
