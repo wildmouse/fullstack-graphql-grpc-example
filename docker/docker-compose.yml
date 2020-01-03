@@ -1,7 +1,30 @@
-version: '3'
+version: '2.4'
 services:
+  frontend:
+    image: wildmouse/frontend:latest
+    container_name: greeting_frontend
+    ports:
+      - 3000:3000
+
+  bff:
+    image: wildmouse/bff:latest
+    container_name: greeting_bff
+    ports:
+      - 4000:4000
+
+  api:
+    image: api:0.0.1-SNAPSHOT
+    container_name: greeting_api
+    # TODO: remove depends on for more resiliency
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+
   mysql:
     image: mysql:5.7
+    container_name: greeting_mysql
     environment:
       MYSQL_ROOT_PASSWORD: hello_world
       MYSQL_DATABASE: hello_world
@@ -11,3 +34,7 @@ services:
       - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping" ,"-h", "localhost", "-uroot", "-phello_world"]
+      timeout: 20s
+      retries: 10
