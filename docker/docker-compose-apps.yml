@@ -1,13 +1,15 @@
 version: '2.4'
 services:
   frontend:
-    image: wildmouse/greeting_frontend:latest
+    build: ../frontend
     container_name: greeting_frontend
     ports:
       - 3000:3000
 
   bff:
-    image: wildmouse/greeting_bff:latest
+    build:
+      context: ../
+      dockerfile: ./graphql-server/Dockerfile
     container_name: greeting_bff
     ports:
       - 4000:4000
