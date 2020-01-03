@@ -9,4 +9,4 @@ FROM mhart/alpine-node:10
 WORKDIR /app
 COPY --from=builder /app .
 EXPOSE 3000
-CMD yarn dev
+CMD CLIENT_URI=http://greeting_bff:4000 yarn dev

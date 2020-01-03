@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=builder /app .
 COPY --from=builder /api /api
 EXPOSE 4000
-CMD node index.js
+CMD CLIENT_URI=greeting_api:8080 node index.js
