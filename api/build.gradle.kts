@@ -106,6 +106,7 @@ jib {
         image = "wildmouse/greeting_api"
     }
     container {
+        // TODO: make active profile variable
         args = listOf("--spring.profiles.active=local")
     }
 }
