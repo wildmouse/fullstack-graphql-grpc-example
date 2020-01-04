@@ -22,8 +22,10 @@ A below languages, frameworks, libraries and other technologies are used(or will
 
 - Kotlin
 - Spring Boot
-- gRPC(as a Server)
+- gRPC
+- Reactive gRPC
 - REST(as a comparison to gRPC)
+- WebFlux
 - Armeria
 - Jib
 - MySQL

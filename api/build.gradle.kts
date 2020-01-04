@@ -43,11 +43,15 @@ protobuf {
         id("grpc") {
             artifact = "io.grpc:protoc-gen-grpc-java:1.26.0"
         }
+        id("reactorGrpc") {
+            artifact = "com.salesforce.servicelibs:reactor-grpc:1.0.0"
+        }
     }
     generateProtoTasks {
         ofSourceSet("main").forEach {
             it.plugins {
                 id("grpc")
+                id("reactorGrpc")
             }
         }
     }
@@ -60,6 +64,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.salesforce.servicelibs:reactor-grpc-stub:1.0.0")
     listOf("armeria",
 //            "armeria-brave",
             "armeria-grpc",
