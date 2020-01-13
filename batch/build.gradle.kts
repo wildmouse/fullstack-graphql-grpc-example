@@ -21,9 +21,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("mysql:mysql-connector-java")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.squareup.okhttp3:okhttp:4.3.1")
 
     runtimeOnly("ch.qos.logback:logback-classic:1.2.3")
     runtimeOnly("org.slf4j:log4j-over-slf4j:1.7.29")
